@@ -1,8 +1,15 @@
 <template>
   <v-app dark>
+
+    <!-- navigation-drawer -->
     <v-navigation-drawer v-model="sideNav" fixed>
       <v-list>
-        <v-list-tile v-for="item in menuItems" :key="item.content">
+        <v-list-tile
+          v-for="item in menuItems"
+          :key="item.content"
+          router
+          :to="item.link"
+        >
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -13,16 +20,25 @@
       </v-list>
     </v-navigation-drawer>
 
+    <!-- toolbar -->
     <v-toolbar class="primary">
       <v-toolbar-side-icon
         class="hidden-sm-and-up"
         @click="sideNav = !sideNav">
       </v-toolbar-side-icon>
-      <v-toolbar-title>FoodFinder</v-toolbar-title>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor: pointer">FoodFinder</router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
 
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn flat v-for="item in menuItems" :key="item.content">
+        <v-btn
+          flat
+          v-for="item in menuItems"
+          :key="item.content"
+          router
+          :to="item.link"
+          >
           <v-icon left>{{ item.icon }}</v-icon>
           {{ item.content }}
         </v-btn>
@@ -31,7 +47,7 @@
 
     <!-- Dynamic content goes here -->
     <main>
-      Content
+      <router-view></router-view>
     </main>
   </v-app>
 </template>
@@ -44,19 +60,23 @@ export default {
       menuItems: [
         {
           icon: 'search',
-          content: 'Nearby'
+          content: 'Nearby',
+          link: '/restaurants'
         },
         {
           icon: 'person',
-          content: 'Profile'
+          content: 'Profile',
+          link: '/profile'
         },
         {
           icon: 'face',
-          content: 'Sign Up'
+          content: 'Sign Up',
+          link: '/signup'
         },
         {
           icon: 'lock_open',
-          content: 'Sign In'
+          content: 'Sign In',
+          link: '/signin'
         }
       ]
     }
