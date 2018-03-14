@@ -26,6 +26,7 @@ export default new Router({
     {
       path: '/restaurant/:id',
       name: 'Restaurant',
+      props: true,
       component: Restaurant
     },
     {

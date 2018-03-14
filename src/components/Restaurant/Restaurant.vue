@@ -4,21 +4,26 @@
       <v-flex xs12>
         <v-card>
           <v-card-title>
-            <h3 class="info--text">Resturant Name</h3>
+            <h3 class="info--text">{{ restaurant.name }}</h3>
             <v-badge color="accent" class="ml-1">
-              <span slot="badge">6</span>
+              <span slot="badge">{{ restaurant.rating }}</span>
             </v-badge>
           </v-card-title>
           <v-card-media
-            src="https://s3-media1.fl.yelpcdn.com/bphoto/mPEPmD0GNnvm67S7lh14pg/o.jpg"
+            :src="restaurant.image_url"
             height="150px"
           >
           </v-card-media>
           <v-card-text>
-            <div>Rating here</div>
-            <div>Category here</div>
-            <div>Distance here</div>
-            <div>Google Map here</div>
+            <div>{{ restaurant.categories.map(c => c.title).join(', ') }}</div>
+            <div>{{ restaurant.distance }} from here!</div>
+            <div>
+              <a
+                class="info"
+                :href="'https://www.google.com/maps/?q=' + restaurant.coordinates.latitude + ',' + restaurant.coordinates.longitude"
+              >Google Maps
+              </a>
+            </div>
             <div>Comments here</div>
           </v-card-text>
           <v-card-actions>
@@ -36,5 +41,11 @@
 
 <script>
 export default {
+  props: ['id'],
+  computed: {
+    restaurant () {
+      return this.$store.getters.loadedResturant(this.id)
+    }
+  }
 }
 </script>
