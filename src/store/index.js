@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as firebase from 'firebase'
+
 import data from './data'
 
 Vue.use(Vuex)
@@ -7,10 +9,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     loadedResturants: data.businesses,
-    user: {
-      id: 'batman',
-      favoritedResturants: ['1']
-    }
+    user: null
   },
   mutations: {
     createReview (state, payload) {
@@ -26,6 +25,9 @@ export const store = new Vuex.Store({
 
       // newest reviews first
       resturant.reviews.unshift(payload)
+    },
+    setUser (state, payload) {
+      state.user = payload
     }
   },
   actions: {
@@ -38,6 +40,41 @@ export const store = new Vuex.Store({
       }
 
       commit('createReview', review)
+    },
+    signUpUser ({ commit }, payload) {
+      firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+        .then(user => {
+          const newUser = {
+            id: user.uid,
+            favoritedResturants: []
+          }
+          commit('setUser', newUser)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    signInUser ({ commit }, payload) {
+      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+        .then(user => {
+          const existingUser = {
+            id: user.id,
+            favoritedResturants: []
+          }
+          commit('setUser', existingUser)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    signOutUser ({ commit }) {
+      firebase.auth().signOut()
+        .then(() => {
+          commit('setUser', null)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   getters: {
@@ -52,6 +89,9 @@ export const store = new Vuex.Store({
           return restaurant.id === restaurantId
         })
       }
+    },
+    user (state) {
+      return state.user
     }
   }
 })

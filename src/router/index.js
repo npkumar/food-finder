@@ -8,6 +8,7 @@ import Restaurants from '@/components/Restaurant/Restaurants'
 import Signup from '@/components/User/Signup'
 import Signin from '@/components/User/Signin'
 import Profile from '@/components/User/Profile'
+import Logout from '@/components/User/Logout'
 
 Vue.use(Router)
 
@@ -43,6 +44,11 @@ export default new Router({
       path: '/signup',
       name: 'Signup',
       component: Signup
+    },
+    {
+      path: '/logout',
+      name: 'Logout',
+      component: Logout
     }
   ],
   mode: 'history'

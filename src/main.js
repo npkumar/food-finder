@@ -5,8 +5,10 @@ import Vuetify from 'vuetify'
 import { store } from './store'
 import DateFilter from './filters/date'
 import DistanceFilter from './filters/distance'
+import * as firebase from 'firebase'
 
 import 'vuetify/dist/vuetify.min.css'
+import config from './config'
 
 Vue.use(Vuetify, { theme: {
   primary: '#673AB7',
@@ -28,5 +30,8 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  created () {
+    firebase.initializeApp(config.firebase)
+  }
 })

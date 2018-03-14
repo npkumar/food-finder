@@ -14,7 +14,7 @@
             height="300px"
           >
           </v-card-media>
-          <v-card-actions>
+          <v-card-actions v-show="userIsAuthenticated">
             <v-btn class="accent ml-2" small>
               <v-icon left small>star</v-icon>
               Favourite
@@ -31,7 +31,7 @@
               </a>
             </div>
 
-            <div>
+            <div v-show="userIsAuthenticated">
               <v-layout row wrap>
                 <v-flex xs12>
                   <form @submit.prevent="onCreateReview">
@@ -102,6 +102,9 @@ export default {
     },
     restaurant () {
       return this.$store.getters.loadedResturant(this.id)
+    },
+    userIsAuthenticated () {
+      return this.$store.getters.user !== null
     }
   },
   methods: {

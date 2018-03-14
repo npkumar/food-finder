@@ -54,18 +54,12 @@
 export default {
   data () {
     return {
-      sideNav: false,
-      menuItems: [
-        {
-          icon: 'search',
-          content: 'Nearby',
-          link: '/restaurants'
-        },
-        {
-          icon: 'person',
-          content: 'Profile',
-          link: '/profile'
-        },
+      sideNav: false
+    }
+  },
+  computed: {
+    menuItems () {
+      let menuItems = [
         {
           icon: 'face',
           content: 'Sign Up',
@@ -77,6 +71,30 @@ export default {
           link: '/signin'
         }
       ]
+
+      if (this.userIsAuthenticated) {
+        menuItems = [
+          {
+            icon: 'search',
+            content: 'Nearby',
+            link: '/restaurants'
+          },
+          {
+            icon: 'person',
+            content: 'Profile',
+            link: '/profile'
+          },
+          {
+            icon: 'settings_power',
+            content: 'Logout',
+            link: '/logout'
+          }
+        ]
+      }
+      return menuItems
+    },
+    userIsAuthenticated () {
+      return this.$store.getters.user !== null
     }
   }
 }
