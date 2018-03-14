@@ -24,7 +24,7 @@ export default new Router({
       component: Restaurants
     },
     {
-      path: '/restaurant',
+      path: '/restaurant/:id',
       name: 'Restaurant',
       component: Restaurant
     },
