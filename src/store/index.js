@@ -24,7 +24,8 @@ export const store = new Vuex.Store({
         resturant.reviews = []
       }
 
-      resturant.reviews.push(payload)
+      // newest reviews first
+      resturant.reviews.unshift(payload)
     }
   },
   actions: {

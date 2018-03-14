@@ -22,7 +22,7 @@
           </v-card-actions>
           <v-card-text>
             <div>{{ restaurant.categories.map(c => c.title).join(', ') }}</div>
-            <div>{{ restaurant.distance }} from here!</div>
+            <div>{{ restaurant.distance | distanceFormat }} km from here!</div>
             <div>
               <a
                 class="info"
@@ -77,9 +77,8 @@
       <v-flex xs12>
         <v-card>
           <v-card-text>
-            {{ item.review }}
-            {{ item.userId }}
-            {{ item.created }}
+            {{ item.review }} -- {{ item.userId }}
+            <p>{{ item.created | dateFormat }}</p>
           </v-card-text>
         </v-card>
       </v-flex>
