@@ -17,16 +17,33 @@ export const store = new Vuex.Store({
     createReview (state, payload) {
       const restaurantId = payload.restaurantId
 
-      const resturant = state.loadedResturants.find(restaurant => {
+      const position = state.loadedResturants.findIndex(restaurant => {
         return restaurant.id === restaurantId
       })
 
-      if (!resturant.reviews) {
-        resturant.reviews = []
+      const restaurant = state.loadedResturants[position]
+      if (!restaurant.reviews) {
+        restaurant.reviews = []
       }
 
       // newest reviews first
-      resturant.reviews.unshift(payload)
+      restaurant.reviews.unshift(payload)
+
+      // insert back
+      state.loadedResturants.splice(position, 1, restaurant)
+    },
+    setReview (state, payload) {
+      const restaurantId = payload.restaurantId
+
+      const position = state.loadedResturants.findIndex(restaurant => {
+        return restaurant.id === restaurantId
+      })
+
+      const restaurant = state.loadedResturants[position]
+      restaurant.reviews = payload.reviews
+
+      // insert back
+      state.loadedResturants.splice(position, 1, restaurant)
     },
     setUser (state, payload) {
       state.user = payload
@@ -49,11 +66,38 @@ export const store = new Vuex.Store({
       const review = {
         review: payload.review,
         restaurantId: payload.restaurantId,
-        userId: payload.userId,
+        username: payload.username,
         created: payload.created
       }
 
-      commit('createReview', review)
+      // store in firebase
+      // keep adding reviews to a restaurant
+      firebase.database().ref(`reviews/${payload.restaurantId}`).push(review)
+        .then(data => {
+          // now update state
+          commit('createReview', review)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    loadReviews ({ commit }, payload) {
+      firebase.database().ref(`reviews/${payload.restaurantId}`).once('value')
+        .then(data => {
+          const reviews = []
+          const obj = data.val()
+          for (let key in obj) {
+            reviews.push(obj[key])
+          }
+          // we attach the reviews to resturant
+          commit('setReview', {
+            restaurantId: payload.restaurantId,
+            reviews
+          })
+        })
+        .then(err => {
+          console.log(err)
+        })
     },
     signUpUser ({ commit }, payload) {
       commit('setLoading', true)
@@ -80,7 +124,8 @@ export const store = new Vuex.Store({
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then(user => {
           const existingUser = {
-            id: user.id,
+            id: user.uid,
+            username: user.email.split('@')[0],
             favoritedResturants: []
           }
           commit('setLoading', false)

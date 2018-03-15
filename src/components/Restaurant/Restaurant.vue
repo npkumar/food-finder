@@ -77,7 +77,7 @@
       <v-flex xs12>
         <v-card>
           <v-card-text>
-            {{ item.review }} -- {{ item.userId }}
+            {{ item.review }} -- {{ item.username }}
             <p>{{ item.created | dateFormat }}</p>
           </v-card-text>
         </v-card>
@@ -88,12 +88,19 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: ['id'],
   data () {
     return {
       review: ''
     }
+  },
+  created () {
+    this.$store.dispatch('loadReviews', {
+      restaurantId: this.restaurant.id
+    })
   },
   computed: {
     formIsValid () {
@@ -105,6 +112,9 @@ export default {
     },
     userIsAuthenticated () {
       return this.$store.getters.user !== null
+    },
+    user () {
+      return this.$store.getters.user
     }
   },
   methods: {
@@ -117,8 +127,8 @@ export default {
       const review = {
         review: this.review,
         restaurantId: this.restaurant.id,
-        userId: 1,
-        created: new Date()
+        username: this.user.username,
+        created: moment().format()
       }
       this.$store.dispatch('createReview', review)
 
