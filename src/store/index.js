@@ -9,7 +9,9 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     loadedResturants: data.businesses,
-    user: null
+    user: null,
+    loading: false,
+    error: null
   },
   mutations: {
     createReview (state, payload) {
@@ -28,9 +30,21 @@ export const store = new Vuex.Store({
     },
     setUser (state, payload) {
       state.user = payload
+    },
+    setError (state, payload) {
+      state.error = payload
+    },
+    setLoading (state, payload) {
+      state.loading = payload
     }
   },
   actions: {
+    setError ({ commit }, payload) {
+      commit('setError', payload)
+    },
+    setLoading ({ commit }, payload) {
+      commit('setLoading', payload)
+    },
     createReview ({ commit }, payload) {
       const review = {
         review: payload.review,
@@ -42,29 +56,39 @@ export const store = new Vuex.Store({
       commit('createReview', review)
     },
     signUpUser ({ commit }, payload) {
+      commit('setLoading', true)
+      commit('setError', null)
+
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(user => {
           const newUser = {
             id: user.uid,
             favoritedResturants: []
           }
+          commit('setLoading', false)
           commit('setUser', newUser)
         })
         .catch(err => {
-          console.log(err)
+          commit('setLoading', false)
+          commit('setError', err.message)
         })
     },
     signInUser ({ commit }, payload) {
+      commit('setLoading', true)
+      commit('setError', null)
+
       firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
         .then(user => {
           const existingUser = {
             id: user.id,
             favoritedResturants: []
           }
+          commit('setLoading', false)
           commit('setUser', existingUser)
         })
         .catch(err => {
-          console.log(err)
+          commit('setLoading', false)
+          commit('setError', err.message)
         })
     },
     signOutUser ({ commit }) {
@@ -92,6 +116,12 @@ export const store = new Vuex.Store({
     },
     user (state) {
       return state.user
+    },
+    error (state) {
+      return state.error
+    },
+    loading (state, error) {
+      return state.loading
     }
   }
 })

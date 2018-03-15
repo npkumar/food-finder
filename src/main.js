@@ -3,9 +3,14 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import { store } from './store'
+import * as firebase from 'firebase'
+
+// Filters
 import DateFilter from './filters/date'
 import DistanceFilter from './filters/distance'
-import * as firebase from 'firebase'
+
+// Shared components
+import AlertComponent from './components/Common/Alert'
 
 import 'vuetify/dist/vuetify.min.css'
 import config from './config'
@@ -22,6 +27,8 @@ Vue.use(Vuetify, { theme: {
 
 Vue.filter('dateFormat', DateFilter)
 Vue.filter('distanceFormat', DistanceFilter)
+
+Vue.component('app-alert', AlertComponent)
 
 Vue.config.productionTip = false
 
