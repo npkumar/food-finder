@@ -28,5 +28,12 @@
 
 <script>
 export default {
+  mounted () {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.$store.dispatch('setCoordinates', position)
+      })
+    }
+  }
 }
 </script>

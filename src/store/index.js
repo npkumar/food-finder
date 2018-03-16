@@ -11,7 +11,9 @@ export const store = new Vuex.Store({
     loadedResturants: data.businesses,
     user: null,
     loading: false,
-    error: null
+    error: null,
+    latitude: 1.35,
+    longitude: 103.86
   },
   mutations: {
     createReview (state, payload) {
@@ -53,9 +55,20 @@ export const store = new Vuex.Store({
     },
     setLoading (state, payload) {
       state.loading = payload
+    },
+    setCoordinates (state, payload) {
+      state.latitude = payload.latitude
+      state.longitude = payload.longitude
+      console.log(payload)
     }
   },
   actions: {
+    setCoordinates ({ commit }, payload) {
+      commit('setCoordinates', {
+        latitude: payload.coords.latitude,
+        longitude: payload.coords.longitude
+      })
+    },
     setError ({ commit }, payload) {
       commit('setError', payload)
     },
