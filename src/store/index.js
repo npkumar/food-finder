@@ -1,10 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as firebase from 'firebase'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 import data from './data'
+import config from '../config'
 
 Vue.use(Vuex)
+Vue.use(VueAxios, axios)
 
 export const store = new Vuex.Store({
   state: {
@@ -60,14 +64,40 @@ export const store = new Vuex.Store({
       state.latitude = payload.latitude
       state.longitude = payload.longitude
       console.log(payload)
+    },
+    setLoadedResturants (state, payload) {
+      state.loadedResturants = payload
     }
   },
   actions: {
     setCoordinates ({ commit }, payload) {
-      commit('setCoordinates', {
-        latitude: payload.coords.latitude,
-        longitude: payload.coords.longitude
-      })
+      const latitude = payload.coords.latitude
+      const longitude = payload.coords.longitude
+
+      // store state and get new restaurant details only if we
+      // detect a change in location of user
+      if (this.state.latitude !== latitude && this.state.longitude !== longitude) {
+        commit('setCoordinates', {
+          latitude,
+          longitude
+        })
+        Vue.axios({
+          method: 'get',
+          url: `${config.yelp.baseUrl}?latitude=${latitude}&longitude=${longitude}&term=restaurants&radius=5000`,
+          headers: {
+            'Authorization': config.yelp.authorization
+          }
+        })
+        .then(res => {
+          if (res.data) {
+            console.log(res.data.businesses)
+            commit('setLoadedResturants', res.data.businesses)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
     },
     setError ({ commit }, payload) {
       commit('setError', payload)
