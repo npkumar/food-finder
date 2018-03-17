@@ -83,14 +83,14 @@ export const store = new Vuex.Store({
         })
         Vue.axios({
           method: 'get',
-          url: `${config.yelp.baseUrl}?latitude=${latitude}&longitude=${longitude}&term=restaurants&radius=5000`,
+          url: `${config.yelp.baseUrl}?latitude=${latitude}&longitude=${longitude}&term=food&radius=3000`,
           headers: {
             'Authorization': config.yelp.authorization
           }
         })
         .then(res => {
           if (res.data) {
-            console.log(res.data.businesses)
+            res.data.businesses.sort((a, b) => a.distance < b.distance)
             commit('setLoadedResturants', res.data.businesses)
           }
         })
@@ -132,6 +132,10 @@ export const store = new Vuex.Store({
           for (let key in obj) {
             reviews.push(obj[key])
           }
+
+          // we want the newest reviews first
+          reviews.sort((a, b) => a.created < b.created)
+
           // we attach the reviews to resturant
           commit('setReview', {
             restaurantId: payload.restaurantId,

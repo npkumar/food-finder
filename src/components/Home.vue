@@ -8,7 +8,7 @@
             <v-layout align-center>
               <v-flex>
                 <h3 class="display-3">Food Finder</h3>
-                <span class="subheading">Lorem ipsum dolor sit amet, pri veniam forensibus id. Vis maluisset molestiae id, ad semper lobortis cum. At impetus detraxit incorrupte usu, repudiare assueverit ex eum, ne nam essent vocent admodum.</span>
+                <span class="subheading">We provide you highly opinionated curated list of amazingly good food that is available around your neighbourhood.<br /><br />Happy munching!</span>
                 <v-divider class="my-3"></v-divider>
               </v-flex>
             </v-layout>
