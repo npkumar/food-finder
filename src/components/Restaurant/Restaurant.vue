@@ -130,6 +130,12 @@ export default {
       review: ''
     }
   },
+  beforeCreate () {
+    // safety net
+    if (!this.$store.getters.loadedResturants) {
+      this.$router.push('/')
+    }
+  },
   created () {
     this.$store.dispatch('loadReviews', {
       restaurantId: this.restaurant.id

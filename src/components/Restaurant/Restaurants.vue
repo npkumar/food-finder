@@ -23,7 +23,7 @@
                   </div>
                 </v-card-title>
                 <v-card-actions>
-                  <v-btn accent :to="'/restaurant/' + restaurant.id">
+                  <v-btn accent :to="'/restaurant/' + restaurant.id" @click="setRestaurant(restaurant)">
                     <v-icon left>arrow_forward</v-icon>More
                   </v-btn>
                 </v-card-actions>
@@ -42,6 +42,17 @@ export default {
   computed: {
     resturants () {
       return this.$store.getters.loadedResturants
+    }
+  },
+  beforeCreate () {
+    // safety net
+    if (!this.$store.getters.loadedResturants) {
+      this.$router.push('/')
+    }
+  },
+  methods: {
+    setRestaurant (resturant) {
+      this.$store.dispatch('setRestaurant', resturant)
     }
   }
 }

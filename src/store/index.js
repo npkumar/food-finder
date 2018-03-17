@@ -4,7 +4,6 @@ import * as firebase from 'firebase'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
-import data from './data'
 import config from '../config'
 
 Vue.use(Vuex)
@@ -12,7 +11,7 @@ Vue.use(VueAxios, axios)
 
 export const store = new Vuex.Store({
   state: {
-    loadedResturants: data.businesses,
+    loadedResturants: null,
     restaurant: null,
     user: null,
     loading: false,
@@ -203,6 +202,9 @@ export const store = new Vuex.Store({
   },
   getters: {
     loadedResturants (state) {
+      if (!state.loadedResturants) {
+        return null
+      }
       return state.loadedResturants.sort((a, b) => {
         return a.rating > b.rating
       })
