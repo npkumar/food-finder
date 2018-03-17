@@ -23,16 +23,45 @@
         <v-btn large class="accent" router to="/restaurants">Recommend</v-btn>
       </v-flex>
     </v-layout>
+
+    <v-snackbar
+      :timeout="3000"
+      :top="true"
+      :bottom="false"
+      :right="true"
+      :left="true"
+      :multi-line="false"
+      :vertical="false"
+      v-model="snackbar"
+    >
+      <div v-if="user">Welcome! {{ user.username }}</div>
+      <div v-else>Goodbye!</div>
+      <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
+    </v-snackbar>
+
   </v-container>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      snackbar: false
+    }
+  },
   mounted () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
         this.$store.dispatch('setCoordinates', position)
       })
+    }
+  },
+  computed: {
+    user () {
+      if (this.$store.getters.user) {
+        this.snackbar = true
+      }
+      return this.$store.getters.user
     }
   }
 }
