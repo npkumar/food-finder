@@ -43,21 +43,23 @@
           >
           </v-card-media>
           <v-card-text>
-            <v-layout row wrap>
-              <v-flex xs2 v-for="restaurant in restaurant.categories" :key="restaurant.alias">
+            <v-layout row wrap mb-4>
+              <v-flex xs2 v-for="category in restaurant.categories" :key="category.alias">
                 <v-chip outline color="orange" text-color="white">
-                  {{ restaurant.title }}
+                  {{ category.title }}
                 </v-chip>
               </v-flex>
             </v-layout>
 
-            <div>
+            <v-layout row wrap>
+              <v-flex xs12 sm10 md8 offset-sm1 offset-md2>
               <a
-                class="info"
+                class="direction-btn"
                 :href="'https://www.google.com/maps/?q=' + restaurant.coordinates.latitude + ',' + restaurant.coordinates.longitude"
-              >Google Maps
+              >Get Directions
               </a>
-            </div>
+              </v-flex>
+            </v-layout>
 
             <v-btn
               color="pink"
@@ -210,3 +212,15 @@ export default {
   }
 }
 </script>
+
+<style>
+  .direction-btn {
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    background-color: black;
+    padding: 10px 20px;
+    border-radius: 5%;
+    cursor: pointer;
+  }
+</style>
