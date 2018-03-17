@@ -17,23 +17,17 @@
           </v-layout>
 
           <v-layout row ml-2 mr-1>
-            <v-flex xs2>
               <v-chip outline color="orange" text-color="white">
                 {{ restaurant.rating }}
                 <v-icon right>star</v-icon>
               </v-chip>
-            </v-flex>
-            <v-flex xs2>
               <v-chip outline color="orange" text-color="white">
                 {{ restaurant.distance | distanceFormat }} km
                 <v-icon right>flight</v-icon>
               </v-chip>
-            </v-flex>
             <v-spacer></v-spacer>
-            <v-flex xs2>
               <v-chip v-if="!restaurant.is_closed" color="green" text-color="white">Open</v-chip>
               <v-chip v-else color="error" text-color="white">Closed</v-chip>
-            </v-flex>
           </v-layout>
 
           <v-card-media
@@ -44,15 +38,15 @@
           </v-card-media>
           <v-card-text>
             <v-layout row wrap mb-4>
-              <v-flex xs2 v-for="category in restaurant.categories" :key="category.alias">
+              <span v-for="category in restaurant.categories" :key="category.alias">
                 <v-chip outline color="orange" text-color="white">
                   {{ category.title }}
                 </v-chip>
-              </v-flex>
+              </span>
             </v-layout>
 
             <v-layout row wrap>
-              <v-flex xs12 sm10 md8 offset-sm1 offset-md2>
+              <v-flex xs12>
               <a
                 class="direction-btn"
                 :href="'https://www.google.com/maps/?q=' + restaurant.coordinates.latitude + ',' + restaurant.coordinates.longitude"
