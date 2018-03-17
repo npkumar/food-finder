@@ -90,9 +90,12 @@ export const store = new Vuex.Store({
           latitude,
           longitude
         })
+
+        // Use a CORS proxy to get around get around “No Access-Control-Allow-Origin header” issue
+        // https://stackoverflow.com/questions/43871637
         Vue.axios({
           method: 'get',
-          url: `${config.yelp.baseUrl}?latitude=${latitude}&longitude=${longitude}&term=food&radius=1000`,
+          url: `https://cors-anywhere.herokuapp.com/${config.yelp.baseUrl}?latitude=${latitude}&longitude=${longitude}&term=food&radius=1000`,
           headers: {
             'Authorization': config.yelp.authorization
           }
