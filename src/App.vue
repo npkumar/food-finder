@@ -2,7 +2,7 @@
   <v-app dark>
 
     <!-- navigation-drawer -->
-    <v-navigation-drawer v-model="sideNav" fixed temporary class="accent">
+    <v-navigation-drawer v-model="sideNav" fixed temporary class="black">
       <v-list>
         <v-list-tile
           v-for="item in menuItems"

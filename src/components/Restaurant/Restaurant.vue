@@ -37,16 +37,11 @@
           </v-layout>
 
           <v-card-media
+            class="mt-1"
             :src="restaurant.image_url"
             height="300px"
           >
           </v-card-media>
-          <v-card-actions v-show="userIsAuthenticated">
-            <v-btn class="accent ml-2" small>
-              <v-icon left small>star</v-icon>
-              Favourite
-            </v-btn>
-          </v-card-actions>
           <v-card-text>
             <v-layout row wrap>
               <v-flex xs2 v-for="restaurant in restaurant.categories" :key="restaurant.alias">
@@ -64,42 +59,76 @@
               </a>
             </div>
 
-            <div v-show="userIsAuthenticated">
-              <v-layout row wrap>
-                <v-flex xs12>
-                  <form @submit.prevent="onCreateReview">
-                    <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
-                        <v-text-field
-                          name="review"
-                          label="Leave a review"
-                          id="review"
-                          multi-line
-                          v-model="review"
-                          class="info--text"
-                          required
-                        >
-                        </v-text-field>
-                      </v-flex>
-                    </v-layout>
-                    <v-layout row>
-                      <v-flex xs12 sm6 offset-sm3>
-                        <v-btn
-                          type="submit"
-                          :disabled="!formIsValid"
-                          class="info">
-                          Submit
-                        </v-btn>
-                      </v-flex>
-                    </v-layout>
-                  </form>
-                </v-flex>
-              </v-layout>
-            </div>
+            <v-btn
+              color="pink"
+              dark
+              small
+              absolute
+              bottom
+              right
+              fab
+              @click="dialog = !dialog"
+              :disabled="!userIsAuthenticated"
+            >
+            <v-icon>add</v-icon>
+            </v-btn>
           </v-card-text>
         </v-card>
       </v-flex>
     </v-layout>
+
+  <v-layout row justify-center>
+    <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" :overlay="false">
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon @click.native="dialog = false" dark>
+            <v-icon>close</v-icon>
+          </v-btn>
+          <v-toolbar-title>Leave a Review!</v-toolbar-title>
+        </v-toolbar>
+
+        <v-card-text>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <form @submit.prevent="onCreateReview">
+                <v-layout row>
+                  <v-flex xs12 sm6 offset-sm3>
+                    <v-text-field
+                      autofocus
+                      name="review"
+                      label="Let others know about your thoughts! "
+                      id="review"
+                      multi-line
+                      v-model="review"
+                      class="info--text"
+                      required
+                    >
+                    </v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row>
+                  <v-flex xs12 sm6 offset-sm3>
+                    <v-btn
+                      @click.prevent="dialog =!dialog"
+                      class="accent">
+                      Cancel
+                    </v-btn>
+                    <v-btn
+                      type="submit"
+                      :disabled="!formIsValid"
+                      class="info">
+                      Submit
+                    </v-btn>
+                  </v-flex>
+                </v-layout>
+              </form>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+
+      </v-card>
+    </v-dialog>
+  </v-layout>
 
     <v-layout
       row wrap
@@ -110,8 +139,8 @@
       <v-flex xs12>
         <v-card>
           <v-card-text>
-            {{ item.review }} -- {{ item.username }}
-            <p>{{ item.created | dateFormat }}</p>
+            <blockquote><i class="orange pl-1 pr-1 black--text">{{ item.review }}</i> -- {{ item.username }}</blockquote>
+            <p class="caption mb-0 pb-0">{{ item.created | dateFormat }}</p>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -127,7 +156,8 @@ export default {
   props: ['id'],
   data () {
     return {
-      review: ''
+      review: '',
+      dialog: false
     }
   },
   beforeCreate () {
@@ -174,8 +204,8 @@ export default {
       // reset this review
       this.review = ''
 
-      // navigate to same page, optional
-      // this.$router.push(`/restaurant/${this.restaurant.id}`)
+      // close the dialog
+      this.dialog = false
     }
   }
 }
