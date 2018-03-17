@@ -3,12 +3,39 @@
     <v-layout row wrap>
       <v-flex xs12>
         <v-card>
-          <v-card-title>
-            <h3 class="info--text">{{ restaurant.name }}</h3>
-            <v-badge color="accent" class="ml-1">
-              <span slot="badge">{{ restaurant.rating }}</span>
-            </v-badge>
+          <v-card-title class="mb-0 pb-0">
+            <h2 class="orange--text">{{ restaurant.name }}</h2>
           </v-card-title>
+
+          <v-layout row wrap class="ml-3">
+            <v-flex xs12>
+              <h5 class="white--text">
+                {{ restaurant.location.address1}}, {{ restaurant.location.address2}},
+                {{ restaurant.location.state}} - {{ restaurant.location.zip_code }}
+              </h5>
+            </v-flex>
+          </v-layout>
+
+          <v-layout row ml-2 mr-1>
+            <v-flex xs2>
+              <v-chip outline color="orange" text-color="white">
+                {{ restaurant.rating }}
+                <v-icon right>star</v-icon>
+              </v-chip>
+            </v-flex>
+            <v-flex xs2>
+              <v-chip outline color="orange" text-color="white">
+                {{ restaurant.distance | distanceFormat }} km
+                <v-icon right>flight</v-icon>
+              </v-chip>
+            </v-flex>
+            <v-spacer></v-spacer>
+            <v-flex xs2>
+              <v-chip v-if="!restaurant.is_closed" color="green" text-color="white">Open</v-chip>
+              <v-chip v-else color="error" text-color="white">Closed</v-chip>
+            </v-flex>
+          </v-layout>
+
           <v-card-media
             :src="restaurant.image_url"
             height="300px"
@@ -21,8 +48,14 @@
             </v-btn>
           </v-card-actions>
           <v-card-text>
-            <div>{{ restaurant.categories.map(c => c.title).join(', ') }}</div>
-            <div>{{ restaurant.distance | distanceFormat }} km from here!</div>
+            <v-layout row wrap>
+              <v-flex xs2 v-for="restaurant in restaurant.categories" :key="restaurant.alias">
+                <v-chip outline color="orange" text-color="white">
+                  {{ restaurant.title }}
+                </v-chip>
+              </v-flex>
+            </v-layout>
+
             <div>
               <a
                 class="info"

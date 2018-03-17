@@ -13,6 +13,7 @@ Vue.use(VueAxios, axios)
 export const store = new Vuex.Store({
   state: {
     loadedResturants: data.businesses,
+    restaurant: null,
     user: null,
     loading: false,
     error: null,
@@ -67,6 +68,9 @@ export const store = new Vuex.Store({
     },
     setLoadedResturants (state, payload) {
       state.loadedResturants = payload
+    },
+    setRestaurant (state, payload) {
+      state.restaurant = payload
     }
   },
   actions: {
@@ -83,7 +87,7 @@ export const store = new Vuex.Store({
         })
         Vue.axios({
           method: 'get',
-          url: `${config.yelp.baseUrl}?latitude=${latitude}&longitude=${longitude}&term=food&radius=3000`,
+          url: `${config.yelp.baseUrl}?latitude=${latitude}&longitude=${longitude}&term=food&radius=1000`,
           headers: {
             'Authorization': config.yelp.authorization
           }
@@ -98,6 +102,9 @@ export const store = new Vuex.Store({
           console.log(err)
         })
       }
+    },
+    setRestaurant ({ commit }, payload) {
+      commit('setRestaurant', payload)
     },
     setError ({ commit }, payload) {
       commit('setError', payload)
@@ -206,6 +213,9 @@ export const store = new Vuex.Store({
           return restaurant.id === restaurantId
         })
       }
+    },
+    restaurant (state) {
+      return state.restaurant
     },
     user (state) {
       return state.user
