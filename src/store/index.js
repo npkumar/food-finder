@@ -3,13 +3,19 @@ import Vuex from 'vuex'
 import * as firebase from 'firebase'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VuexPersistence from 'vuex-persist'
 
 import config from '../config'
 
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage
+})
+
 export const store = new Vuex.Store({
+  plugins: [vuexLocal.plugin],
   state: {
     loadedResturants: null,
     restaurant: null,
