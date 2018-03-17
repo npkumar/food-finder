@@ -150,6 +150,7 @@ export const store = new Vuex.Store({
         .then(user => {
           const newUser = {
             id: user.uid,
+            username: user.email.split('@')[0],
             favoritedResturants: []
           }
           commit('setLoading', false)
