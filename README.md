@@ -1,6 +1,10 @@
-# food-finder
+# Food Finder
 
 > Opinionated curated list of good food available around your neighbourhood.
+
+## Live Application
+Works best on a mobile!
+[FoodFinder](http://food-finder-earth.herokuapp.com/)
 
 ## Usage
 1. Ensure, location access is allowed on your phone or browser
@@ -30,26 +34,95 @@
 <img src="https://github.com/npkumar/food-finder/blob/master/screenshots/after_adding_review.png" alt="After add review" width="250" height="450" />
 </div>
 
-## Build Setup
+## Local Development
+1. Clone this repository. App was last tested on `Node v9.3.0`
+2. Keys and Credentials:
 
-``` bash
-# install dependencies
-npm install
+2.1. Firebase for backend authentication and as database. Do get the required keys from [Firebase](https://firebase.google.com/docs/web/setup).
 
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run all tests
-npm test
+Because of firebase, we don't need a schema prepared beforehand. However, the design for reviews follows a simple pattern like
+```
+your-firebase-database
+--reviews
+  --restaurant1
+  --restaurant2
+    -LongKey1
+      created: "2018-03-17T21:15:00+08:00"
+      restaurantId: "island-creamery-singapore"
+      review: "The good stuff"
+      username: "monkey"
+    -LongKey2
+      created: "2018-03-17T21:15:48+08:00"
+      restaurantId: "island-creamery-singapore"
+      review: "Rum and Beer flavours!"
+      username: "getnpk"
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+2.2. Yelp API for nearby business based on location from [Yelp Developers](https://www.yelp.com/developers/documentation/v3/get_started)
+
+3. Populate contents of `src/config.json` with above data. For example:
+```
+{
+  "firebase": {
+    "apiKey": "apiKey",
+    "authDomain": "authDomain",
+    "databaseURL": "https://database-url.firebaseio.com",
+    "projectId": "projectId",
+    "storageBucket": "bucket.appspot.com",
+    "messagingSenderId": "9999999999"
+  },
+  "yelp": {
+    "authorization": "Bearer VeryLongKeyHere",
+    "baseUrl": "https://api.yelp.com/v3/businesses/search"
+  }
+}
+```
+
+4. Run `npm run dev`. Good to go!
+
+## Production Deployment on Heroku
+1. Set up Heroku toolchain [Toolchain](https://devcenter.heroku.com/articles/heroku-cli)
+2. Use a git branch called `heroku` specifically for Heroku deployments
+3. Changes to be made on `heroku` branch
+
+3.1. Remove `/dist/` from `.gitignore`. We need this folder to be deployed
+
+3.2. `src/config.json` is to be commited unlike in `master` branch
+
+## Build and deploy to production
+1. `heroku login`
+2. Set up a heroku project and point heroku to that project
+```heroku git:remote --app <YOUR-PROJECT-NAME-HERE>```
+For example, `git remote -v` now shows you:
+```
+heroku  https://git.heroku.com/food-finder-earth.git (fetch)
+heroku  https://git.heroku.com/food-finder-earth.git (push)
+```
+At this stage, ensure `master` has all the changes you need to push to production.
+
+3. Checkout `heroku` branch with `git checkout heroku`
+
+4. Rebase `heroku` with `master` with `git pull --rebase origin master`
+
+5. Build for production with `npm run build`. This step will update our `dist` folder with latest changes.
+
+6. Add all changes and commit with a version
+
+
+```
+git add -A
+git commit -m "Deploy version 1.0.2"
+```
+
+7. Finally deploy to heroku
+```
+git push heroku heroku:master --force
+```
+
+8. Done!
+
+## CI and deployment
+Can consider automating above steps by a simple shell script and or using [Travis-Heroku-Specific-Branch](https://docs.travis-ci.com/user/deployment/heroku/#Deploying-Specific-Branches) to deploy a specific branch to Heroku.
+
+
+This project was built with [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
