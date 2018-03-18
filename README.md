@@ -4,7 +4,9 @@
 
 ## Live Application
 Works best on a mobile!
-[FoodFinder](http://food-finder-earth.herokuapp.com/)
+[FoodFinder](https://food-finder-earth.herokuapp.com/)
+
+Please use `https` since we use the [GeoLocation API](https://developers.google.com/web/updates/2016/04/geolocation-on-secure-contexts-only)
 
 ## Usage
 1. Ensure, location access is allowed on your phone or browser
