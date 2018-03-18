@@ -23,7 +23,7 @@
               </v-chip>
               <v-chip outline color="orange" text-color="white">
                 {{ restaurant.distance | distanceFormat }} km
-                <v-icon right>flight</v-icon>
+                <v-icon right>directions</v-icon>
               </v-chip>
             <v-spacer></v-spacer>
               <v-chip v-if="!restaurant.is_closed" color="green" text-color="white">Open</v-chip>
@@ -47,16 +47,18 @@
 
             <v-layout row wrap>
               <v-flex xs12>
-              <a
-                class="direction-btn"
-                :href="'https://www.google.com/maps/?q=' + restaurant.coordinates.latitude + ',' + restaurant.coordinates.longitude"
-              >Get Directions
-              </a>
+                <v-btn
+                  color="accent"
+                  class="ml-0 pl-0"
+                  @click="window.location.href=`https://www.google.com/maps?q=${restaurant.coordinates.latitude},${restaurant.coordinates.longitude}`"
+                >
+                <v-icon left>directions</v-icon>Get Directions
+                </v-btn>
               </v-flex>
             </v-layout>
 
             <v-btn
-              color="pink"
+              color="accent"
               dark
               small
               absolute
@@ -152,6 +154,7 @@ export default {
   props: ['id'],
   data () {
     return {
+      window,
       review: '',
       dialog: false
     }
@@ -190,7 +193,7 @@ export default {
       }
 
       const review = {
-        review: this.review,
+        review: this.review.trim(),
         restaurantId: this.restaurant.id,
         username: this.user.username,
         created: moment().format()
@@ -212,7 +215,7 @@ export default {
     color: white;
     text-decoration: none;
     text-transform: uppercase;
-    background-color: black;
+    background-color: #FF5252;
     padding: 10px 20px;
     border-radius: 5%;
     cursor: pointer;

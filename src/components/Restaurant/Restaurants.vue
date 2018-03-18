@@ -3,7 +3,7 @@
     <v-layout row wrap v-for="restaurant in resturants" :key="restaurant.id" class="mb-2">
       <v-flex xs12 sm10 md8 offset-sm1 offset-md2>
 
-        <v-card>
+        <v-card :to="'/restaurant/' + restaurant.id">
           <v-container fluid>
             <v-layout row>
 
@@ -22,11 +22,6 @@
                     <div>{{ restaurant.categories.map(c => c.title).splice(0, 2).join(', ')}}</div>
                   </div>
                 </v-card-title>
-                <v-card-actions>
-                  <v-btn accent :to="'/restaurant/' + restaurant.id" @click="setRestaurant(restaurant)">
-                    <v-icon left>arrow_forward</v-icon>More
-                  </v-btn>
-                </v-card-actions>
               </v-flex>
             </v-layout>
           </v-container>
