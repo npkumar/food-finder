@@ -18,7 +18,7 @@
               <v-flex xs7 sm8 md9>
                 <v-card-title>
                   <div>
-                    <h2 class="info--text">{{ restaurant.name }}</h2>
+                    <h2 class="orange--text">{{ restaurant.name }}</h2>
                     <div>{{ restaurant.categories.map(c => c.title).splice(0, 2).join(', ')}}</div>
                   </div>
                 </v-card-title>

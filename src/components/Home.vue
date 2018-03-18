@@ -7,7 +7,7 @@
           <v-container fill-height>
             <v-layout align-center>
               <v-flex>
-                <h3 class="display-3">Food Finder</h3>
+                <h3 class="display-3 orange--text">Food Finder</h3>
                 <span class="subheading">We provide you highly opinionated curated list of amazingly good food that is available around your neighbourhood.<br /><br />Happy munching!</span>
                 <v-divider class="my-3"></v-divider>
               </v-flex>
