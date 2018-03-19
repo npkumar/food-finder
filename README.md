@@ -60,6 +60,16 @@ your-firebase-database
       username: "getnpk"
 ```
 
+Firebase Database Rules
+```
+{
+  "rules": {
+    ".read": true,
+    ".write": "auth != null"
+  }
+}
+```
+
 2.2. Yelp API for nearby business based on location from [Yelp Developers](https://www.yelp.com/developers/documentation/v3/get_started)
 
 3. Populate contents of `src/config.json` with above data. For example:
